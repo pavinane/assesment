@@ -1,19 +1,10 @@
 import React from "react";
-import { useForm } from "react-hook-form";
-import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { setSearchProduct } from "../action/userAction";
+import SearchBar from "./searchBar";
+import { useSelector } from "react-redux";
 
-const Header = ({ searchName }) => {
+const Header = () => {
   const user = useSelector((state) => state.user.user);
-
-  const { register, handleSubmit } = useForm();
-  const dispatch = useDispatch();
-  const onSubmit = (data) => {
-    // Assuming authentication logic here; set user to Redux state on successful login
-    console.log(data, "datas");
-    dispatch(setSearchProduct(data.searchName));
-  };
 
   return (
     <>
@@ -49,22 +40,10 @@ const Header = ({ searchName }) => {
                     </Link>
                   </li>
                 </ul>
-                <form
-                  className="d-flex"
-                  role="search"
-                  onSubmit={handleSubmit(onSubmit)}
-                >
-                  <input
-                    className="form-control me-2"
-                    type="search"
-                    placeholder="Search"
-                    aria-label="Search"
-                    {...register("searchName", { required: true })}
-                  />
-                  <button className="btn btn-outline-success" type="submit">
-                    Search
-                  </button>
-                </form>
+
+                <>
+                  <SearchBar />
+                </>
 
                 <div className="navbar-nav ">
                   {user ? (

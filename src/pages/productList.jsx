@@ -1,38 +1,45 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
+import { connect } from "react-redux";
 import Cards from "../component/cards";
-import { useSelector } from "react-redux";
+import { setProductList } from "../action/userAction";
 
-// 1. Fetch the Product Details using fetch method
-// 2. get the product using map use to list the products
+// // 1. Fetch the Product Details using fetch method
+// // 2. get the product using map use to list the products
 
-function ProductList() {
-  const [product, setProduct] = useState([]);
-  const searchProducts = useSelector(
-    (state) => state.searchProduct.searchProduct
-  );
-  let URL = "https://dummyjson.com/products";
+const ProductList = ({ productList, setProductList, searchTerm }) => {
+  // Simulate fetching products from an API
+  const fetchProducts = async () => {
+    try {
+      const response = await fetch("https://dummyjson.com/products");
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error("Error fetching products:", error);
+      return [];
+    }
+  };
+
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        const fetchingProduct = await fetch(URL);
-        const Response = await fetchingProduct.json();
-        setProduct(Response.products);
-        console.log("res", Response);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchData();
-  }, [URL]);
+      const fetchedProducts = await fetchProducts();
 
-  const filteredUsers = product.filter((user) =>
-    `${user.title} ${user.brand}`.toLowerCase().includes(searchProducts)
-  );
+      console.log(fetchedProducts, "products");
+      const filteredProducts = fetchedProducts?.products.filter((user) =>
+        `${user.title} ${user.brand}`.toLowerCase().includes(searchTerm)
+      );
+
+      setProductList(filteredProducts);
+    };
+
+    fetchData();
+  }, [searchTerm, setProductList]);
 
   return (
-    <div className="p-4">
+    <div>
+      <h2>Product List</h2>
+      {/* Display productList */}
       <div className="row">
-        {filteredUsers?.map((item, index) => {
+        {productList.map((item, index) => {
           return (
             <div className="col-sm-4 mb-3 mb-sm-0">
               <Cards
@@ -50,6 +57,15 @@ function ProductList() {
       </div>
     </div>
   );
-}
+};
 
-export default ProductList;
+const mapStateToProps = (state) => ({
+  productList: state.searchProduct.productList,
+  searchTerm: state.searchProduct.searchTerm,
+});
+
+const mapDispatchToProps = {
+  setProductList,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProductList);

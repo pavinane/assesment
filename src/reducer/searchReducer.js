@@ -1,6 +1,7 @@
 // reducer
 const initialState = {
-  searchProduct: "",
+  searchTerm: "",
+  productList: [],
 };
 
 const searchProdcutreducer = (state = initialState, action) => {
@@ -8,8 +9,10 @@ const searchProdcutreducer = (state = initialState, action) => {
     case "SEARCH_PRODUCT":
       return {
         ...state,
-        searchProduct: action.payload,
+        searchTerm: action.payload,
       };
+    case "SET_PRODUCT_LIST":
+      return { ...state, productList: action.payload };
     default:
       return state;
   }
