@@ -10,7 +10,7 @@ function ProfileUser() {
   return (
     <div className="mt-4">
       <p>{user && `Welcome, ${user}!`}</p>
-      <button type="button" class="btn btn-secondary" onClick={onSubmit}>
+      <button type="button" className="btn btn-secondary" onClick={onSubmit}>
         Product
       </button>
     </div>

@@ -5,6 +5,11 @@
   color: #fff;
 }
 
+.navbarContent {
+
+  justify-content: space-between !important;
+}
+
 @media (min-width: 1200px) {
   .specification>p {
 
